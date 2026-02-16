@@ -23,7 +23,7 @@ Steps:
    - Image: Go to **Marketplace** tab, and select *LAMP on Ubuntu 24.04*
    - Size: Basic
    - CPU: Your preferred CPU configs >> **(prices vary)**
-   - Authentication Method: Password -> Create your own password
+   - Authentication Method: Password -> Create your own password, used later to connect via SSH
 
    - **Note**: Remember to add a payment method as well!
 
@@ -39,10 +39,21 @@ Steps:
    - Name: @
    - Data: Your DigitalOcean Droplet IP Address *(displayed as ipv4)*
    - TTL: Custom (600 seconds)
-
    - **Note**: It may take up to 48 hours for the DNS to start recognizing the record
 C. FTP Software *(FileZilla)*
 1. Download FileZilla for simpler file uploads to host server
 
 ## Setup:
-
+* Open Command Prompt (on Windows) or Terminal (on Mac/Linux)
+* Connect to Droplet ip address via command SSH: *ssh root@YOUR_IP_ADDR*
+* Connect to MySQL: *mysql -u root -p* & use same password
+* Create databases:
+  - 1. create database ```COLORMANAGER```;      // db_name
+  - 2. use ```COLORMANAGER```;
+  - 3. 
+```
+  CREATE TABLE `COP4331`.`Users` ( `ID` INT NOT NULL AUTO_INCREMENT , `FirstName`
+VARCHAR(50) NOT NULL DEFAULT '' , `LastName` VARCHAR(50) NOT NULL DEFAULT '' , `Login`
+VARCHAR(50) NOT NULL DEFAULT '' , `Password` VARCHAR(50) NOT NULL DEFAULT '' ,
+PRIMARY KEY (`ID`)) ENGINE = InnoDB;
+```
