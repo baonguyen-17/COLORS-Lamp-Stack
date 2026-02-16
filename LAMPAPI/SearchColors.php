@@ -10,6 +10,7 @@
 	$searchResults = "";
 	$searchCount = 0;
 
+	
 	$conn = new mysqli("localhost", "username", "password", "db_name");	// Configure each argument with your droplet's credentials and database
 	if ($conn->connect_error) 
 	{

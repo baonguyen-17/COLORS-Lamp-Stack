@@ -47,11 +47,11 @@ C. FTP Software *(FileZilla)*
 
 ## Setup:
 * Open Command Prompt (on Windows) or Terminal (on Mac/Linux)
-* Connect to Droplet ip address via command SSH: *ssh root@YOUR_IP_ADDR*
+* Connect to Droplet ip address via SSH command: *ssh root@YOUR_IP_ADDR*
 * Connect to MySQL: *mysql -u root -p* & use same password
 * Create databases:
-  - 1. create database ```COLORMANAGER```;      // db_name
-  - 2. use ```COLORMANAGER```;
+  - 1. ```create database COLORMANAGER```;      // db_name
+  - 2. ```use COLORMANAGER```;
   - 3. 
 ```
   CREATE TABLE `COLORMANAGER`.`Users` ( `ID` INT NOT NULL AUTO_INCREMENT , `FirstName`
@@ -59,7 +59,6 @@ VARCHAR(50) NOT NULL DEFAULT '' , `LastName` VARCHAR(50) NOT NULL DEFAULT '' , `
 VARCHAR(50) NOT NULL DEFAULT '' , `Password` VARCHAR(50) NOT NULL DEFAULT '' ,
 PRIMARY KEY (`ID`)) ENGINE = InnoDB;
 ```
-
   - 4. 
 ```
 CREATE TABLE `COP4331`.`Colors` ( `ID` INT NOT NULL AUTO_INCREMENT , `Name`
@@ -67,5 +66,26 @@ VARCHAR(50) NOT NULL DEFAULT '' , `UserID` INT NOT NULL DEFAULT '0' , PRIMARY KE
 (`ID`)) ENGINE = InnoDB;
 ```
 * Populate databases
-  - Use command template: ```insert into Users (FirstName, LastName, Login, Password) values (FIRSTNAME, LASTNAME, LOGIN, PASSWORD);``` to insert a new user
+  - Use command template: ```insert into Users (FirstName, LastName, Login, Password) values (FIRST_NAME, LAST_NAME, LOGIN, PASSWORD);``` to insert a new user
   - Use command template: ```create user USERNAME identified by PASSWORD;```, followed by ```grant all privileges on COLORMANAGER.* to USERNAME@'%';``` to grant database privileges to that user (which we use later to configure the API endpoints)
+
+* Configure API Endpoints
+  - For all the ```.php``` files located in the LAMPAPI folder, access each and do the following:
+    - Change the ```localhost```, ```username```, ```password``` and ```db_name``` to your configuration
+
+* Configure script.js
+ - For the file ```script.js``` located in ```public```, change the var ```urlBase``` to become: ```http://YOUR_DOMAIN/LAMPAPI/```
+
+* Open Filezilla, configure the fields on top & connect:
+  - host: YOUR_DOMAIN
+  - username: YOUR_DROPLET_ROOT
+  - password: YOUR_PASSWORD
+  - port: 22
+
+* Use search bar to navigate to ```var/www/html```
+* Upload the folders ```public``` and ```LAMPAPI```
+
+### Test
+* Search your domain & test the UIs
+
+
