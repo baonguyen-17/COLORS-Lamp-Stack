@@ -1,4 +1,4 @@
-const urlBase = 'http://benlampstack17-2oo2.xyz/LAMPAPI';
+const urlBase = `http://${process.env.URL_DOMAIN}/LAMPAPI`;		// Change ${...} part to your purchased domain here
 const extension = 'php';
 
 let userId = 0;
