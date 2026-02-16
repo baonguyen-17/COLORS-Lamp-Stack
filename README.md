@@ -40,6 +40,8 @@ Steps:
    - Data: Your DigitalOcean Droplet IP Address *(displayed as ipv4)*
    - TTL: Custom (600 seconds)
    - **Note**: It may take up to 48 hours for the DNS to start recognizing the record
+
+
 C. FTP Software *(FileZilla)*
 1. Download FileZilla for simpler file uploads to host server
 
@@ -52,8 +54,18 @@ C. FTP Software *(FileZilla)*
   - 2. use ```COLORMANAGER```;
   - 3. 
 ```
-  CREATE TABLE `COP4331`.`Users` ( `ID` INT NOT NULL AUTO_INCREMENT , `FirstName`
+  CREATE TABLE `COLORMANAGER`.`Users` ( `ID` INT NOT NULL AUTO_INCREMENT , `FirstName`
 VARCHAR(50) NOT NULL DEFAULT '' , `LastName` VARCHAR(50) NOT NULL DEFAULT '' , `Login`
 VARCHAR(50) NOT NULL DEFAULT '' , `Password` VARCHAR(50) NOT NULL DEFAULT '' ,
 PRIMARY KEY (`ID`)) ENGINE = InnoDB;
 ```
+
+  - 4. 
+```
+CREATE TABLE `COP4331`.`Colors` ( `ID` INT NOT NULL AUTO_INCREMENT , `Name`
+VARCHAR(50) NOT NULL DEFAULT '' , `UserID` INT NOT NULL DEFAULT '0' , PRIMARY KEY
+(`ID`)) ENGINE = InnoDB;
+```
+* Populate databases
+  - Use command template: ```insert into Users (FirstName, LastName, Login, Password) values (FIRSTNAME, LASTNAME, LOGIN, PASSWORD);``` to insert a new user
+  - Use command template: ```create user USERNAME identified by PASSWORD;```, followed by ```grant all privileges on COLORMANAGER.* to USERNAME@'%';``` to grant database privileges to that user (which we use later to configure the API endpoints)
