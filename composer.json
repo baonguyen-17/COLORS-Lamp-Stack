@@ -1,0 +1,14 @@
+{
+    "name": "baonguyen-17/colors-lamp-stack",
+    "description": "A COLORS Lamp Stack project",
+    "type": "project",
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}
