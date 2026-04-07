@@ -73,9 +73,8 @@ function _readCookie()
 	userId = -1;
 	const data = document.cookie;
 	const splits = data.split(",");
-	var i;
 
-	for(i = 0; i < splits.length; i++) 
+	for(const i = 0; i < splits.length; i++) 
 	{
 		const thisOne = splits[i].trim();
 		const tokens = thisOne.split("=");
