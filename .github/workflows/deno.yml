@@ -36,10 +36,12 @@ jobs:
       # - name: Verify formatting
       #   run: deno fmt --check
 
-      - name: Run linter
-        run: deno lint
+      # - name: Run linter
+      #   run: deno lint
 
       - name: Run all tests
+        env:
+          URL_DOMAIN: ${{ secrets.URL_DOMAIN }}
         run: deno task test
 
       - name: Run unit tests

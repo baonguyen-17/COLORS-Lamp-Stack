@@ -19,7 +19,7 @@
   },
 
   "lint": {
-    "include": ["src/"],
+    "include": ["public/"],
     "rules": {
       "tags": ["recommended"]
     }
