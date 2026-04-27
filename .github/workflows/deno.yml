@@ -39,18 +39,18 @@ jobs:
       # - name: Run linter
       #   run: deno lint
 
-      - name: Run all tests
+      - name: Run all tests (unit & integration)
         env:
           URL_DOMAIN: ${{ secrets.URL_DOMAIN }}
         run: deno task test
 
-      - name: Run unit tests
-        env:
-          URL_DOMAIN: ${{ secrets.URL_DOMAIN }}
-        run: deno test public/tests/script_test.js --allow-env
+      # - name: Run unit tests
+      #   env:
+      #     URL_DOMAIN: ${{ secrets.URL_DOMAIN }}
+      #   run: deno test public/tests/unit_test.js --allow-env
 
-      - name: Run integration tests
-        env:
-          URL_DOMAIN: ${{ secrets.URL_DOMAIN }}
-        run: deno test public/tests/integration_test.js --allow-net --allow-env
+      # - name: Run integration tests
+      #   env:
+      #     URL_DOMAIN: ${{ secrets.URL_DOMAIN }}
+      #   run: deno test public/tests/integration_test.js --allow-net --allow-env
 
