@@ -1,60 +1,63 @@
 import process from "node:process";
 
-const urlBase = `http://${process.env.URL_DOMAIN}/LAMPAPI`;		// Change ${...} part to your purchased domain here
-const extension = 'php';
+// const urlBase = `http://${process.env.URL_DOMAIN}/LAMPAPI`;		// Change ${...} part to your purchased domain here
+
+// const endpoint = 'Login.php';
 
 const userId = 0;
 const firstName = "";
 const lastName = "";
 
-function _doLogin()
+
+export async function loginRequest (login, password) {
+
+	const url = Deno.env.get("URL_DOMAIN");
+
+	const urlBase = `http://${url}/LAMPAPI`;		// Change ${...} part to your purchased domain here
+	const endpoint = 'Login.php';
+
+
+	if (!login || !password) {
+		throw new Error("Username and password are required");
+	}
+
+	const response = await fetch(`${urlBase}/${endpoint}`, {
+		method: "POST",
+		headers: {
+			"Content-type": "application/json; charset=UTF-8"
+		},
+		body: JSON.stringify({ login: login, password: password })
+	});
+
+
+	if (!response.ok) {
+		throw new Error(`Login failed: ${response.statusText}`);
+	}
+
+	const data = await response.json();
+	if (!data.id || data.id < 1){
+		throw new Error("User/Password combination incorrect");
+	}
+
+	return {
+		userId: data.id,
+		firstName: data.firstName,
+		lastName: data.lastName
+	}
+}
+
+export async function doLogin()
 {
-	userId = 0;
-	firstName = "";
-	lastName = "";
-	
 	const login = document.getElementById("loginName").value;
 	const password = document.getElementById("loginPassword").value;
-//	var hash = md5( password );
-	
 	document.getElementById("loginResult").innerHTML = "";
 
-	const tmp = {login:login,password:password};
-//	var tmp = {login:login,password:hash};
-	const jsonPayload = JSON.stringify( tmp );
-	
-	const url = urlBase + '/Login.' + extension;
-
-	const xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.onreadystatechange = function() 
-		{
-			if (this.readyState == 4 && this.status == 200) 
-			{
-				const jsonObject = JSON.parse( xhr.responseText );
-				userId = jsonObject.id;
-		
-				if( userId < 1 )
-				{		
-					document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
-					return;
-				}
-		
-				firstName = jsonObject.firstName;
-				lastName = jsonObject.lastName;
-
-				saveCookie();
-	
-				window.location.href = "color.html";
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch(err)
-	{
+	try {
+		const result = await loginRequest(login, password);
+		saveCookie(result.firstName, result.lastName, result.userId);
+		globalThis.location.href = "home.html";
+		return result;
+	} catch (err) {
 		document.getElementById("loginResult").innerHTML = err.message;
 	}
 
@@ -68,22 +71,22 @@ function saveCookie()
 	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ";expires=" + date.toGMTString();
 }
 
-function _readCookie()
+function readCookie()
 {
-	userId = -1;
+	let userId = -1;
 	const data = document.cookie;
 	const splits = data.split(",");
-	for(const i = 0; i < splits.length; i++) 
+	for(let i = 0; i < splits.length; i++) 
 	{
 		const thisOne = splits[i].trim();
 		const tokens = thisOne.split("=");
 		if( tokens[0] == "firstName" )
 		{
-			firstName = tokens[1];
+			let _firstName = tokens[1];
 		}
 		else if( tokens[0] == "lastName" )
 		{
-			lastName = tokens[1];
+			let lastName = tokens[1];
 		}
 		else if( tokens[0] == "userId" )
 		{
@@ -93,7 +96,7 @@ function _readCookie()
 	
 	if( userId < 0 )
 	{
-		window.location.href = "index.html";
+		globalThis.location.href = "index.html";
 	}
 	else
 	{
@@ -101,16 +104,16 @@ function _readCookie()
 	}
 }
 
-function _doLogout()
+function doLogout()
 {
-	userId = 0;
-	firstName = "";
-	lastName = "";
+	let userId = 0;
+	let firstName = "";
+	let lastName = "";
 	document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-	window.location.href = "index.html";
+	globalThis.location.href = "index.html";
 }
 
-function _addColor()
+function addColor()
 {
 	const newColor = document.getElementById("colorText").value;
 	document.getElementById("colorAddResult").innerHTML = "";
@@ -141,12 +144,12 @@ function _addColor()
 	
 }
 
-function _searchColor()
+function searchColor()
 {
 	const srch = document.getElementById("searchText").value;
 	document.getElementById("colorSearchResult").innerHTML = "";
 	
-	const colorList = "";
+	let colorList = "";
 
 	const tmp = {search:srch,userId:userId};
 	const jsonPayload = JSON.stringify( tmp );
@@ -165,7 +168,7 @@ function _searchColor()
 				document.getElementById("colorSearchResult").innerHTML = "Color(s) has been retrieved";
 				const jsonObject = JSON.parse( xhr.responseText );
 				
-				for( const i=0; i<jsonObject.results.length; i++ )
+				for( let i=0; i<jsonObject.results.length; i++ )
 				{
 					colorList += jsonObject.results[i];
 					if( i < jsonObject.results.length - 1 )
